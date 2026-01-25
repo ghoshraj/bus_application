@@ -1,0 +1,6 @@
+# Project exclude paths
+/booking/target/
+/payment/target/
+/route/target/
+/schedule/target/
+/seat-inventory/target/

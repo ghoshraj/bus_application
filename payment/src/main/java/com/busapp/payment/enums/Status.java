@@ -1,0 +1,9 @@
+package com.busapp.payment.enums;
+
+public enum Status {
+    PENDING,
+    SUCCESS,
+    FAILED,
+    REFUNDED,
+    CANCELLED
+}
