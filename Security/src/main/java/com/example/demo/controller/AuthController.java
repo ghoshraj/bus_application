@@ -3,10 +3,18 @@ package com.example.demo.controller;
 import com.example.demo.entity.User;
 import com.example.demo.model.AuthenticationRequest;
 import com.example.demo.model.AuthenticationResponse;
+import com.example.demo.model.ErrorResponse;
+import com.example.demo.model.RegisterRequest;
 import com.example.demo.model.RegisterResponse;
 import com.example.demo.service.UserService;
 import com.example.demo.service.security.CustomUserDetailsService;
 import com.example.demo.service.security.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Tag(name = "Auth", description = "Authentication endpoints")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -29,19 +38,28 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody User user) {
-        User savedUser = userService.addUser(user);
+    @Operation(summary = "Register", description = "Creates a new user account")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Registered successfully",
+                    content = @Content(schema = @Schema(implementation = RegisterResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Validation error / already exists",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
 
-        RegisterResponse response = new RegisterResponse();
-        response.setId(savedUser.getId());
-        response.setName(savedUser.getName());
-        response.setEmail(savedUser.getEmail());
+        return ResponseEntity.ok(userService.registerUser(request));
 
-        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+    @Operation(summary = "Login", description = "Authenticates user and returns a JWT token")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Login successful",
+                    content = @Content(schema = @Schema(implementation = AuthenticationResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

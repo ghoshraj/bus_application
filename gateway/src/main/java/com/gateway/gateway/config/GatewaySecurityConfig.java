@@ -35,6 +35,11 @@ public class GatewaySecurityConfig {
                 .authorizeExchange(ex -> ex
                         // PUBLIC APIs - No authentication required
                         .pathMatchers("/auth/**").permitAll()
+                        .pathMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**"
+                        ).permitAll()
 
                         // ADMIN AND SUPER_ADMIN APIs (GET)
                         .pathMatchers(HttpMethod.GET, "/companies/{id}", "/companies/registration/**")
