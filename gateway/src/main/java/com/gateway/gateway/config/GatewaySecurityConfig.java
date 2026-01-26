@@ -45,6 +45,9 @@ public class GatewaySecurityConfig {
                                 "/users/swagger-ui/**",
                                 "/users/v3/api-docs/**",
 
+                                "/vehicles/swagger-ui/**",
+                                "/vehicles/v3/api-docs/**",
+
                                 "/favicon.ico"
                         ).permitAll()
 
