@@ -1,6 +1,12 @@
 server:
   port: 7083
 
+springdoc:
+  api-docs:
+    path: /routes/v3/api-docs
+  swagger-ui:
+    path: /routes/swagger-ui.html
+
 spring:
   application:
     name: route_service
