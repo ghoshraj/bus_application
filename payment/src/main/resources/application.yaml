@@ -1,6 +1,12 @@
 server:
   port: 7087
 
+springdoc:
+  api-docs:
+    path: /payments/v3/api-docs
+  swagger-ui:
+    path: /payments/swagger-ui.html
+
 spring:
   application:
     name: payment_service

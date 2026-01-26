@@ -60,6 +60,9 @@ public class GatewaySecurityConfig {
                                 "/bookings/swagger-ui/**",
                                 "/bookings/v3/api-docs/**",
 
+                                "/payments/swagger-ui/**",
+                                "/payments/v3/api-docs/**",
+
                                 "/favicon.ico"
                         ).permitAll()
 
