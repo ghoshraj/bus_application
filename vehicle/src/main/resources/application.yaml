@@ -1,6 +1,12 @@
 server:
   port: 7082
 
+springdoc:
+  api-docs:
+    path: /vehicles/v3/api-docs
+  swagger-ui:
+    path: /vehicles/swagger-ui.html
+
 spring:
   application:
     name: vehicle_service
