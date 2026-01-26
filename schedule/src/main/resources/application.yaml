@@ -1,6 +1,12 @@
 server:
   port: 7084
 
+springdoc:
+  api-docs:
+    path: /schedules/v3/api-docs
+  swagger-ui:
+    path: /schedules/swagger-ui.html
+
 spring:
   application:
     name: schedule_service
