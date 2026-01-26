@@ -37,8 +37,15 @@ public class GatewaySecurityConfig {
                         .pathMatchers("/auth/**").permitAll()
                         .pathMatchers(
                                 "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+
+                                "/auth/swagger-ui/**",
+                                "/auth/v3/api-docs/**",
+
+                                "/users/swagger-ui/**",
+                                "/users/v3/api-docs/**",
+
+                                "/favicon.ico"
                         ).permitAll()
 
                         // ADMIN AND SUPER_ADMIN APIs (GET)

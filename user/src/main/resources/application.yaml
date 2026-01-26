@@ -1,6 +1,12 @@
 server:
   port: 7081
 
+springdoc:
+  api-docs:
+    path: /users/v3/api-docs
+  swagger-ui:
+    path: /users/swagger-ui.html
+
 spring:
   application:
     name: user_service
