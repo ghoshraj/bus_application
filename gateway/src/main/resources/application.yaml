@@ -82,7 +82,7 @@ spring:
         - id: seat-inventory-service
           uri: http://localhost:7085
           predicates:
-            - Path=/seats/lock,/seats/unlock,/seats/availability/**
+            - Path=/seats/**
           filters:
             - StripPrefix=0
 
