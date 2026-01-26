@@ -1,6 +1,12 @@
 server:
   port: 7085
 
+springdoc:
+  api-docs:
+    path: /seats/v3/api-docs
+  swagger-ui:
+    path: /seats/swagger-ui.html
+
 spring:
   application:
     name: seat_inventory_service

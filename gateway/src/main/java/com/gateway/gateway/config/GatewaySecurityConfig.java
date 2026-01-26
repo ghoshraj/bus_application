@@ -54,6 +54,9 @@ public class GatewaySecurityConfig {
                                 "/schedules/swagger-ui/**",
                                 "/schedules/v3/api-docs/**",
 
+                                "/seats/swagger-ui/**",
+                                "/seats/v3/api-docs/**",
+
                                 "/favicon.ico"
                         ).permitAll()
 
