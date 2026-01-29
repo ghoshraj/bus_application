@@ -3,9 +3,9 @@ server:
 
 springdoc:
   api-docs:
-    path: /vehicles/v3/api-docs
+    path: /v3/api-docs
   swagger-ui:
-    path: /vehicles/swagger-ui.html
+    enabled: false
 
 spring:
   application:
