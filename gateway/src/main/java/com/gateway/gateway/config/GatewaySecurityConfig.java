@@ -36,7 +36,9 @@ public class GatewaySecurityConfig {
                         // PUBLIC APIs - No authentication required
                         .pathMatchers("/auth/**").permitAll()
                         .pathMatchers(
+                                "/swagger-ui.html",
                                 "/swagger-ui/**",
+                                "/webjars/**",
                                 "/v3/api-docs/**",
 
                                 "/auth/swagger-ui/**",
