@@ -12,3 +12,6 @@ public class GatewayApplication {
 		SpringApplication.run(GatewayApplication.class, args);
 	}
 }
+
+
+//http://localhost:9090/webjars/swagger-ui/index.html?urls.primaryName=Auth%20Service
