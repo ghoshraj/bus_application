@@ -35,6 +35,38 @@ public class GatewaySecurityConfig {
                 .authorizeExchange(ex -> ex
                         // PUBLIC APIs - No authentication required
                         .pathMatchers("/auth/**").permitAll()
+                        .pathMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/webjars/**",
+                                "/v3/api-docs/**",
+
+                                "/auth/swagger-ui/**",
+                                "/auth/v3/api-docs/**",
+
+                                "/users/swagger-ui/**",
+                                "/users/v3/api-docs/**",
+
+                                "/vehicles/swagger-ui/**",
+                                "/vehicles/v3/api-docs/**",
+
+                                "/routes/swagger-ui/**",
+                                "/routes/v3/api-docs/**",
+
+                                "/schedules/swagger-ui/**",
+                                "/schedules/v3/api-docs/**",
+
+                                "/seats/swagger-ui/**",
+                                "/seats/v3/api-docs/**",
+
+                                "/bookings/swagger-ui/**",
+                                "/bookings/v3/api-docs/**",
+
+                                "/payments/swagger-ui/**",
+                                "/payments/v3/api-docs/**",
+
+                                "/favicon.ico"
+                        ).permitAll()
 
                         // ADMIN AND SUPER_ADMIN APIs (GET)
                         .pathMatchers(HttpMethod.GET, "/companies/{id}", "/companies/registration/**")

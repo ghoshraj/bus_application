@@ -5,6 +5,10 @@ import com.example.demo.enums.Roles;
 import com.example.demo.exception.GlobalExceptionEnums;
 import com.example.demo.exception.UserAlreadyExistsException;
 import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.RegisterRequest;
+import com.example.demo.model.RegisterResponse;
+import com.example.demo.model.UserResponse;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +26,34 @@ public class UserServiceImpl implements UserService {
 
     private final UserPersistenceServiceImpl userPersistenceService;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
+
+
+    @Override
+    public RegisterResponse registerUser(RegisterRequest request) {
+
+        User user = userMapper.toEntity(request);
+        User savedUser = addUser(user);
+
+        return userMapper.toRegisterResponse(savedUser);
+    }
+
+    @Override
+    public UserResponse assignRoles(Integer userId, Set<Roles> roles) {
+
+        User user = findById(userId);
+        if (user == null) {
+            throw new UserNotFoundException(
+                    GlobalExceptionEnums.USER_NOT_FOUND,
+                    "User with id: " + userId
+            );
+        }
+        user.setRoles(roles);
+
+        User updatedUser = userPersistenceService.updateUser(user);
+
+        return userMapper.toUserResponse(updatedUser);
+    }
 
     @Override
     public User addUser(User user) {
@@ -44,22 +77,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
-        return userPersistenceService.findAll();
-    }
-
-    @Override
-    @Transactional
-    public User assignRoles(Integer userId, Set<Roles> roles) {
-        User user = findById(userId);
-        if (user == null) {
-            throw new UserNotFoundException(
-                    GlobalExceptionEnums.USER_NOT_FOUND,
-                    "User with id: " + userId
-            );
-        }
-        user.setRoles(roles);
-        return userPersistenceService.updateUser(user);
+    public List<UserResponse> findAll() {
+        return userPersistenceService.findAll().stream()
+                .map(userMapper::toUserResponse)
+                .collect(Collectors.toList());
     }
 
     @Override

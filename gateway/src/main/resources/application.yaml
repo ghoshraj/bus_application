@@ -1,33 +1,98 @@
 server:
   port: 9090
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Auth Service
+        url: /auth/v3/api-docs
+      - name: User Service
+        url: /users/v3/api-docs
+      - name: Vehicle Service
+        url: /vehicles/v3/api-docs
+      - name: Route Service
+        url: /routes/v3/api-docs
+      - name: Schedule Service
+        url: /schedules/v3/api-docs
+      - name: Seat Inventory Service
+        url: /seats/v3/api-docs
+      - name: Booking Service
+        url: /bookings/v3/api-docs
+      - name: Payment Service
+        url: /payments/v3/api-docs
+
 spring:
   application:
     name: api-gateway
 
   cloud:
     gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
       routes:
-        # Auth Service
+        # Swagger/OpenAPI docs routes (strip service prefix)
+        - id: auth-service-docs
+          uri: http://localhost:8081
+          predicates:
+            - Path=/auth/v3/api-docs/**,/auth/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: user-service-docs
+          uri: http://localhost:7081
+          predicates:
+            - Path=/users/v3/api-docs/**,/users/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: vehicle-service-docs
+          uri: http://localhost:7082
+          predicates:
+            - Path=/vehicles/v3/api-docs/**,/vehicles/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: route-service-docs
+          uri: http://localhost:7083
+          predicates:
+            - Path=/routes/v3/api-docs/**,/routes/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: schedule-service-docs
+          uri: http://localhost:7084
+          predicates:
+            - Path=/schedules/v3/api-docs/**,/schedules/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: seat-inventory-service-docs
+          uri: http://localhost:7085
+          predicates:
+            - Path=/seats/v3/api-docs/**,/seats/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: booking-service-docs
+          uri: http://localhost:7086
+          predicates:
+            - Path=/bookings/v3/api-docs/**,/bookings/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: payment-service-docs
+          uri: http://localhost:7087
+          predicates:
+            - Path=/payments/v3/api-docs/**,/payments/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        # Auth Service + Swagger
         - id: auth-service
           uri: http://localhost:8081
           predicates:
-            - Path=/auth/**
-          filters:
-            - StripPrefix=0
-        # Admin Service (Auth Service)
-        - id: admin-service
-          uri: http://localhost:8081
-          predicates:
-          - Path=/admin/**
-          filters:
-          - StripPrefix=0
-
-        # Super Admin Service (Auth Service)
-        - id: super-admin-service
-          uri: http://localhost:8081
-          predicates:
-            - Path=/super-admin/**
+            - Path=/auth/**,/admin/**,/super-admin/**
           filters:
             - StripPrefix=0
 
@@ -95,7 +160,7 @@ spring:
         - id: seat-inventory-service
           uri: http://localhost:7085
           predicates:
-            - Path=/seats/lock,/seats/unlock,/seats/availability/**
+            - Path=/seats/**
           filters:
             - StripPrefix=0
 
