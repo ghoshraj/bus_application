@@ -97,46 +97,19 @@ spring:
             - StripPrefix=0
 
         # User Service - Users, Companies, Drivers
-        - id: user-service-users
+        - id: user-service
           uri: http://localhost:7081
           predicates:
-            - Path=/users/**
+            - Path=/users/**,/companies/**,/drivers/**
           filters:
-            - StripPrefix=0
+          - StripPrefix=0
 
-        - id: user-service-companies
-          uri: http://localhost:7081
-          predicates:
-            - Path=/companies/**
-          filters:
-            - StripPrefix=0
 
-        - id: user-service-drivers
-          uri: http://localhost:7081
-          predicates:
-            - Path=/drivers/**
-          filters:
-            - RewritePath=/drivers/(.*), /companies/drivers/$1
-
-        # Vehicle Service - Buses and Vehicles
-        - id: vehicle-service-buses
+        # Vehicle Service - Buses, Vehicles, Seats
+        - id: vehicle-service
           uri: http://localhost:7082
           predicates:
-            - Path=/buses/**
-          filters:
-            - StripPrefix=0
-
-        - id: vehicle-service-vehicles
-          uri: http://localhost:7082
-          predicates:
-            - Path=/vehicles/**
-          filters:
-            - StripPrefix=0
-
-        - id: vehicle-service-seats-bus
-          uri: http://localhost:7082
-          predicates:
-            - Path=/seats/bus/**
+            - Path=/buses/**,/vehicles/**,/seats/bus/**
           filters:
             - StripPrefix=0
 
