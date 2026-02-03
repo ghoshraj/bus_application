@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.filter.JwtAuthenticationFilter;
+import jakarta.servlet.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -18,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.example.demo.constant.SecurityConstants.*;
 
 @Configuration
 @EnableWebSecurity
@@ -38,17 +41,16 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/swagger-ui/**", "/swagger-ui.html",
-                                "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/super-admin/**").hasRole("SUPER_ADMIN")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers(AUTH_BASE, SWAGGER_UI, SWAGGER_UI_HTML, API_DOCS).permitAll()
+                        .requestMatchers(SUPER_ADMIN_API).hasRole(ROLE_SUPER_ADMIN)
+                        .requestMatchers(ADMIN_API).hasRole(ROLE_ADMIN)
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore((Filter) jwtAuthFilter, (Class<? extends Filter>) UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
