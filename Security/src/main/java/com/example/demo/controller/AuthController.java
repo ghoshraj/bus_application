@@ -1,11 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.User;
-import com.example.demo.model.AuthenticationRequest;
-import com.example.demo.model.AuthenticationResponse;
-import com.example.demo.model.ErrorResponse;
-import com.example.demo.model.RegisterRequest;
-import com.example.demo.model.RegisterResponse;
+import com.example.demo.model.*;
 import com.example.demo.service.UserService;
 import com.example.demo.service.security.CustomUserDetailsService;
 import com.example.demo.service.security.JwtService;
@@ -26,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.example.demo.constant.ApiConstants.*;
+
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(AUTH_BASE_PATH)
 @RequiredArgsConstructor
-@Tag(name = "Auth", description = "Authentication endpoints")
+@Tag(name = AUTH_TAG, description = AUTH_TAG_DESC)
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -37,39 +34,37 @@ public class AuthController {
     private final JwtService jwtService;
     private final UserService userService;
 
-    @PostMapping("/register")
-    @Operation(summary = "Register", description = "Creates a new user account")
+    @PostMapping(REGISTER)
+    @Operation(summary = REGISTER_SUMMARY, description = REGISTER_DESC)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Registered successfully",
+            @ApiResponse(responseCode = OK_200, description = REGISTER_SUCCESS,
                     content = @Content(schema = @Schema(implementation = RegisterResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Validation error / already exists",
+            @ApiResponse(responseCode = BAD_REQUEST_400, description = BAD_REQUEST,
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
 
         return ResponseEntity.ok(userService.registerUser(request));
-
     }
 
-    @PostMapping("/login")
-    @Operation(summary = "Login", description = "Authenticates user and returns a JWT token")
+    @PostMapping(LOGIN)
+    @Operation(summary = LOGIN_SUMMARY, description = LOGIN_DESC)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Login successful",
+            @ApiResponse(responseCode = OK_200, description = LOGIN_SUCCESS,
                     content = @Content(schema = @Schema(implementation = AuthenticationResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Invalid credentials",
+            @ApiResponse(responseCode = UNAUTHORIZED_401, description = UNAUTHORIZED,
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(
+            @Valid @RequestBody AuthenticationRequest request) {
+
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                )
-        );
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getUsername());
+
         String token = jwtService.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(token, "Login successful"));
+        return ResponseEntity.ok(new AuthenticationResponse(token, LOGIN_SUCCESS));
     }
 }
