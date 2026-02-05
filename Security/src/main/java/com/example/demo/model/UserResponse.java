@@ -18,7 +18,7 @@ public class UserResponse {
     @Schema(example = USER_ID_EXAMPLE)
     private Integer id;
 
-    @Schema(example = USER_NAME_EXAMPLE)
+    @Schema(example = USERNAME_EXAMPLE)
     private String name;
 
     @Schema(example = USER_EMAIL_EXAMPLE)

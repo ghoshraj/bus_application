@@ -23,15 +23,22 @@ public class ModelConstants {
     public static final String USERNAME_DESC = "Email/username";
     public static final String PASSWORD_DESC = "Password";
     public static final String USER_ROLES_DESC = "Assigned roles";
+    public static final String UNAUTHORIZED_DESC = "Unauthorized error response";
+    public static final String FORBIDDEN_DESC = "Forbidden error response";
+    public static final String BAD_REQUEST_DESC = "Bad request error response";
 
     // ===== SWAGGER EXAMPLES =====
     public static final String USERNAME_EXAMPLE = "Rajesh Ghosh";
     public static final String PASSWORD_EXAMPLE = "StrongPassword@123";
     public static final String USER_ID_EXAMPLE = "1";
-    public static final String USER_NAME_EXAMPLE = "Raj";
     public static final String USER_EMAIL_EXAMPLE = "raj@example.com";
     public static final String USER_PHONE_EXAMPLE = "9876543210";
     public static final String USER_GENDER_EXAMPLE = "MALE";
+    public static final String TOKEN_EXAMPLE = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+    public static final String LOGIN_MESSAGE_EXAMPLE = "Login successful";
+
+    // ===== TIMESTAMP EXAMPLE =====
+    public static final String TIMESTAMP_EXAMPLE = "2026-02-05T14:45:59Z";
 
     private ModelConstants() {
 
