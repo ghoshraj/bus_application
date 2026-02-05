@@ -7,12 +7,15 @@ import lombok.Data;
 
 import java.util.Set;
 
+import static com.example.demo.constant.ModelConstants.ROLE_REQUIRED;
+import static com.example.demo.constant.ModelConstants.USER_ID_REQUIRED;
+
 @Data
 public class AssignRolesRequest {
 
-    @NotNull(message = "userId is required")
+    @NotNull(message = USER_ID_REQUIRED)
     private Integer userId;
 
-    @NotEmpty(message = "At least one role must be assigned")
+    @NotEmpty(message = ROLE_REQUIRED)
     private Set<Roles> roles;
 }
