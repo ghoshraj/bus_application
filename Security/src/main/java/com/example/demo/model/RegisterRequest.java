@@ -5,30 +5,29 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import static com.example.demo.constant.ModelConstants.*;
+
 @Data
 public class RegisterRequest {
 
-    @Schema(example = "Raj", description = "Full name")
-    @NotBlank(message = "name is required")
+    @Schema(example = USERNAME_EXAMPLE, description = "Full name")
+    @NotBlank(message = NAME_REQUIRED)
     private String name;
 
-    @Schema(example = "raj@example.com", description = "Email address used for login")
-    @Email(message = "email must be valid")
-    @NotBlank(message = "email is required")
+    @Schema(example = USER_EMAIL_EXAMPLE, description = "Email address used for login")
+    @Email(message = EMAIL_INVALID)
+    @NotBlank(message = EMAIL_REQUIRED)
     private String email;
 
-    @Schema(
-            example = "StrongPassword@123",
-            description = "Password (never returned in responses)",
-            accessMode = Schema.AccessMode.WRITE_ONLY
-    )
-    @NotBlank(message = "password is required")
+    @Schema(example = PASSWORD_EXAMPLE, description = "Password (never returned in responses)",
+            accessMode = Schema.AccessMode.WRITE_ONLY)
+    @NotBlank(message = PASSWORD_REQUIRED)
     private String password;
 
-    @Schema(example = "9876543210")
+    @Schema(example = USER_PHONE_EXAMPLE)
     private String phoneNumber;
 
-    @Schema(example = "MALE")
+    @Schema(example = USER_GENDER_EXAMPLE)
     private String gender;
 }
 
