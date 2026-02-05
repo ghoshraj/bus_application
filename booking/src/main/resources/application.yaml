@@ -1,6 +1,13 @@
 server:
   port: 7086
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: false
+
+
 spring:
   application:
     name: booking_service

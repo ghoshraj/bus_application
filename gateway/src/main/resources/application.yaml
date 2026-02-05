@@ -1,6 +1,27 @@
 server:
   port: 9090
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Auth Service
+        url: /auth/v3/api-docs
+      - name: User Service
+        url: /users/v3/api-docs
+      - name: Vehicle Service
+        url: /vehicles/v3/api-docs
+      - name: Route Service
+        url: /routes/v3/api-docs
+      - name: Schedule Service
+        url: /schedules/v3/api-docs
+      - name: Seat Inventory Service
+        url: /seats/v3/api-docs
+      - name: Booking Service
+        url: /bookings/v3/api-docs
+      - name: Payment Service
+        url: /payments/v3/api-docs
+
 spring:
   application:
     name: api-gateway
@@ -10,55 +31,85 @@ spring:
       globalcors:
         add-to-simple-url-handler-mapping: true
       routes:
+        # Swagger/OpenAPI docs routes (strip service prefix)
+        - id: auth-service-docs
+          uri: http://localhost:8081
+          predicates:
+            - Path=/auth/v3/api-docs/**,/auth/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: user-service-docs
+          uri: http://localhost:7081
+          predicates:
+            - Path=/users/v3/api-docs/**,/users/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: vehicle-service-docs
+          uri: http://localhost:7082
+          predicates:
+            - Path=/vehicles/v3/api-docs/**,/vehicles/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: route-service-docs
+          uri: http://localhost:7083
+          predicates:
+            - Path=/routes/v3/api-docs/**,/routes/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: schedule-service-docs
+          uri: http://localhost:7084
+          predicates:
+            - Path=/schedules/v3/api-docs/**,/schedules/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: seat-inventory-service-docs
+          uri: http://localhost:7085
+          predicates:
+            - Path=/seats/v3/api-docs/**,/seats/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: booking-service-docs
+          uri: http://localhost:7086
+          predicates:
+            - Path=/bookings/v3/api-docs/**,/bookings/v3/api-docs
+          filters:
+            - StripPrefix=1
+
+        - id: payment-service-docs
+          uri: http://localhost:7087
+          predicates:
+            - Path=/payments/v3/api-docs/**,/payments/v3/api-docs
+          filters:
+            - StripPrefix=1
+
         # Auth Service + Swagger
         - id: auth-service
           uri: http://localhost:8081
           predicates:
-            - Path=/auth/**,/admin/**,/super-admin/**,/swagger-ui/**,/swagger-ui.html,/v3/api-docs/**
+            - Path=/auth/**,/admin/**,/super-admin/**
           filters:
             - StripPrefix=0
 
         # User Service - Users, Companies, Drivers
-        - id: user-service-users
+        - id: user-service
           uri: http://localhost:7081
           predicates:
-            - Path=/users/**
+            - Path=/users/**,/companies/**,/drivers/**
           filters:
-            - StripPrefix=0
+          - StripPrefix=0
 
-        - id: user-service-companies
-          uri: http://localhost:7081
-          predicates:
-            - Path=/companies/**
-          filters:
-            - StripPrefix=0
 
-        - id: user-service-drivers
-          uri: http://localhost:7081
-          predicates:
-            - Path=/drivers/**
-          filters:
-            - RewritePath=/drivers/(.*), /companies/drivers/$1
-
-        # Vehicle Service - Buses and Vehicles
-        - id: vehicle-service-buses
+        # Vehicle Service - Buses, Vehicles, Seats
+        - id: vehicle-service
           uri: http://localhost:7082
           predicates:
-            - Path=/buses/**
-          filters:
-            - StripPrefix=0
-
-        - id: vehicle-service-vehicles
-          uri: http://localhost:7082
-          predicates:
-            - Path=/vehicles/**
-          filters:
-            - StripPrefix=0
-
-        - id: vehicle-service-seats-bus
-          uri: http://localhost:7082
-          predicates:
-            - Path=/seats/bus/**
+            - Path=/buses/**,/vehicles/**,/seats/bus/**
           filters:
             - StripPrefix=0
 

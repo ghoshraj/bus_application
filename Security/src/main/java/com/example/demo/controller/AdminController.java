@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.User;
-import com.example.demo.model.ErrorResponse;
+import com.example.demo.model.ForbiddenErrorResponse;
+import com.example.demo.model.UnauthorizedErrorResponse;
 import com.example.demo.model.UserResponse;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,27 +19,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.example.demo.constant.ApiConstants.*;
+import static com.example.demo.constant.SecurityConstants.ROLE_ADMIN;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping(ADMIN_BASE_PATH)
 @RequiredArgsConstructor
-@Tag(name = "Admin", description = "Admin endpoints")
-@SecurityRequirement(name = "bearerAuth")
+@Tag(name = ROLE_ADMIN, description = ADMIN_TAG_DESC)
+@SecurityRequirement(name = BEARER_AUTH)
 public class AdminController {
 
     private final UserService userService;
 
-    @GetMapping("/getAllUser")
-    @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Get all users", description = "Returns a list of users (without passwords)")
+    @GetMapping(GET_ALL_USERS)
+    @PreAuthorize(HAS_ROLE_ADMIN)
+    @Operation(summary = GET_ALL_USERS_SUMMARY, description = GET_ALL_USERS_DESC)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK",
+            @ApiResponse(responseCode = OK_200, description = OK,
                     content = @Content(schema = @Schema(implementation = UserResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = UNAUTHORIZED_401, description = UNAUTHORIZED,
+                    content = @Content(schema = @Schema(implementation = UnauthorizedErrorResponse.class))),
+            @ApiResponse(responseCode = FORBIDDEN_403, description = FORBIDDEN,
+                    content = @Content(schema = @Schema(implementation = ForbiddenErrorResponse.class)))
     })
     public ResponseEntity<List<UserResponse>> getAllUser() {
         List<UserResponse> users = userService.findAll();

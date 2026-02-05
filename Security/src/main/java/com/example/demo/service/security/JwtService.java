@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.example.demo.constant.SecurityConstants.ROLE;
+import static com.example.demo.constant.SecurityConstants.ROLES;
+
 @Service
 public class JwtService {
 
@@ -61,19 +64,19 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .map(authority -> authority.replace("ROLE_", ""))
+                .map(authority -> authority.replace(ROLE, ""))
                 .collect(Collectors.toList());
-        claims.put("roles", roles);
+        claims.put(ROLES, roles);
         return createToken(claims, userDetails.getUsername());
     }
 
     public String generateToken(UserDetails userDetails, Map<String, Object> extraClaims) {
-        if (!extraClaims.containsKey("roles")) {
+        if (!extraClaims.containsKey(ROLES)) {
             List<String> roles = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
-                    .map(authority -> authority.replace("ROLE_", ""))
+                    .map(authority -> authority.replace(ROLE, ""))
                     .collect(Collectors.toList());
-            extraClaims.put("roles", roles);
+            extraClaims.put(ROLES, roles);
         }
         return createToken(extraClaims, userDetails.getUsername());
     }

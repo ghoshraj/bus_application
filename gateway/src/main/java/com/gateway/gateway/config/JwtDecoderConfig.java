@@ -11,13 +11,14 @@ import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 
+import static com.gateway.gateway.constant.GatewayConstants.JWT_SECRET_KEY_PROPERTY;
+
 @Configuration
 @Slf4j
 public class JwtDecoderConfig {
 
     @Bean
-    public ReactiveJwtDecoder reactiveJwtDecoder(
-            @Value("${spring.security.oauth2.resourceserver.jwt.secret-key}") String secret) {
+    public ReactiveJwtDecoder reactiveJwtDecoder(@Value(JWT_SECRET_KEY_PROPERTY) String secret) {
 
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
         SecretKey key = Keys.hmacShaKeyFor(keyBytes);

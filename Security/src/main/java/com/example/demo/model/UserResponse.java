@@ -8,27 +8,29 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+import static com.example.demo.constant.ModelConstants.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse {
 
-    @Schema(example = "1")
+    @Schema(example = USER_ID_EXAMPLE)
     private Integer id;
 
-    @Schema(example = "Raj")
+    @Schema(example = USERNAME_EXAMPLE)
     private String name;
 
-    @Schema(example = "raj@example.com")
+    @Schema(example = USER_EMAIL_EXAMPLE)
     private String email;
 
-    @Schema(example = "9876543210")
+    @Schema(example = USER_PHONE_EXAMPLE)
     private String phoneNumber;
 
-    @Schema(example = "MALE")
+    @Schema(example = USER_GENDER_EXAMPLE)
     private String gender;
 
-    @Schema(description = "Assigned roles")
+    @Schema(description = USER_ROLES_DESC)
     private Set<Roles> roles;
 }
 

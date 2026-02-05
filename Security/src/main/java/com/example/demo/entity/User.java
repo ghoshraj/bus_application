@@ -8,9 +8,11 @@ import lombok.Data;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.example.demo.constant.ModelConstants.*;
+
 @Entity
 @Data
-@Table(name = "users")
+@Table(name = USER_TABLE)
 public class User {
 
     @Id
@@ -31,10 +33,8 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id")
-    )
-    @Column(name = "role")
+    @CollectionTable(name = USER_ROLES_TABLE,
+            joinColumns = @JoinColumn(name = USER_ID))
+    @Column(name = ROLE)
     private Set<Roles> roles = new HashSet<>();
 }

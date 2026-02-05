@@ -17,6 +17,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static com.example.demo.constant.SecurityConstants.AUTHORIZATION;
+import static com.example.demo.constant.SecurityConstants.BEARER;
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -28,11 +31,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader(AUTHORIZATION);
         final String jwt;
         final String username;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith(BEARER)) {
             filterChain.doFilter(request, response);
             return;
         }
