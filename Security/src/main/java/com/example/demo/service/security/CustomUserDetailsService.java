@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.example.demo.constant.SecurityConstants.ROLE;
+
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -23,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         Set<String> roleNames = user.getRoles() != null
                 ? user.getRoles().stream()
-                .map(role -> role.name().replace("ROLE_", ""))
+                .map(role -> role.name().replace(ROLE, ""))
                 .collect(Collectors.toSet())
                 : Set.of();
         String[] rolesArray = roleNames.toArray(new String[0]);

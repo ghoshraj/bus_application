@@ -15,6 +15,15 @@ public final class SecurityConstants {
     public static final String ROLE_SUPER_ADMIN = "SUPER_ADMIN";
     public static final String ROLE_ADMIN = "ADMIN";
 
+    // ===== FILTER =====
+    public static final String BEARER = "Bearer ";
+    public static final String AUTHORIZATION = "Authorization";
+
+    // ==== USER_DETAILS ====
+    public static final String ROLE = "ROLE_";
+    public static final String ROLES = "roles";
+
+
     // Prevent instantiation
     private SecurityConstants() {
     }
