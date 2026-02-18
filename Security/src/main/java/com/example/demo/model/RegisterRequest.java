@@ -34,5 +34,7 @@ public class RegisterRequest {
     @Schema(example = USER_GENDER_EXAMPLE)
     @NotBlank(message = GENDER_REQUIRED)
     private String gender;
+
+    //why
 }
 
