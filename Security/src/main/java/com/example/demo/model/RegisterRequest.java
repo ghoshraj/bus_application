@@ -32,6 +32,7 @@ public class RegisterRequest {
     private String phoneNumber;
 
     @Schema(example = USER_GENDER_EXAMPLE)
+    @NotBlank(message = GENDER_REQUIRED)
     private String gender;
 }
 
