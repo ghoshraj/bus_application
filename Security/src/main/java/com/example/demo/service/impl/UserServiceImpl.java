@@ -32,14 +32,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public RegisterResponse registerUser(RegisterRequest request) {
 
-        User savedUser = null;
-        if (userPersistenceService.findByPhone(request.getPhoneNumber()) == null) {
-            User user = userMapper.toEntity(request);
-            savedUser = addUser(user);
-        }
-        else {
-            throw new UserAlreadyExistsException(GlobalExceptionEnums.USER_ALREADY_EXISTS, request.getPhoneNumber());
-        }
+        User user = userMapper.toEntity(request);
+        User savedUser = addUser(user);
+
         return userMapper.toRegisterResponse(savedUser);
     }
 
@@ -48,7 +43,10 @@ public class UserServiceImpl implements UserService {
 
         User user = findById(userId);
         if (user == null) {
-            throw new UserNotFoundException(GlobalExceptionEnums.USER_NOT_FOUND, "User with id: " + userId);
+            throw new UserNotFoundException(
+                    GlobalExceptionEnums.USER_NOT_FOUND,
+                    "User with id: " + userId
+            );
         }
         user.setRoles(roles);
 
@@ -66,7 +64,10 @@ public class UserServiceImpl implements UserService {
             user.setRoles(Set.of(Roles.ROLE_USER));
             return userPersistenceService.addUser(user);
         } else {
-            throw new UserAlreadyExistsException(GlobalExceptionEnums.USER_ALREADY_EXISTS, user.getEmail());
+            throw new UserAlreadyExistsException(
+                    GlobalExceptionEnums.USER_ALREADY_EXISTS,
+                    user.getEmail()
+            );
         }
     }
 

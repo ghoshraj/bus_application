@@ -23,12 +23,10 @@ public class UserPersistenceServiceImpl  {
 
     public User findByName(String name) {
         return userRepo.findByName(name)
-                .orElseThrow(() -> new UserNotFoundException(GlobalExceptionEnums.USER_NOT_FOUND, name));
-    }
-
-    public User findByPhone(String phoneNumber) {
-        return userRepo.findByPhoneNumber(phoneNumber)
-                .orElse(null);
+                .orElseThrow(() -> new UserNotFoundException(
+                        GlobalExceptionEnums.USER_NOT_FOUND,
+                        name
+                ));
     }
 
     public User getUserByEmail(String email) {
