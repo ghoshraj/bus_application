@@ -28,7 +28,7 @@ public class RegisterRequest {
 
     @Schema(example = USER_PHONE_EXAMPLE)
     @NotBlank(message = PHONE_REQUIRED)
-    @Pattern(regexp = "^[0-9]{10,15}$", message = PHONE_INVALID)
+    @Pattern(regexp = "^[6-9][0-9]{9}$", message = PHONE_INVALID)
     private String phoneNumber;
 
     @Schema(example = USER_GENDER_EXAMPLE)
