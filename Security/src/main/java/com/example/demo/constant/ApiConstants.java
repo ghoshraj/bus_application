@@ -45,7 +45,7 @@ public class ApiConstants {
     public static final String LOGIN_SUCCESS = "Login successful";
     public static final String BAD_REQUEST = "Validation error / already exists";
     public static final String UNAUTHORIZED = "Token is invalid or expired";
-    public static final String FORBIDDEN = "You don't have access";
+    public static final String FORBIDDEN = "You do not have permission to access this resource";
     public static final String ASSIGN_ROLE_SUCCESS = "Assign role successfully";
 
     // ===== SECURITY EXPRESSIONS =====

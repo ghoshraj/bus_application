@@ -40,7 +40,7 @@ public class AuthController {
             @ApiResponse(responseCode = OK_200, description = REGISTER_SUCCESS,
                     content = @Content(schema = @Schema(implementation = RegisterResponse.class))),
             @ApiResponse(responseCode = BAD_REQUEST_400, description = BAD_REQUEST,
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+                    content = @Content(schema = @Schema(implementation = BadRequestErrorResponse.class)))
     })
     public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
 
@@ -53,13 +53,11 @@ public class AuthController {
             @ApiResponse(responseCode = OK_200, description = LOGIN_SUCCESS,
                     content = @Content(schema = @Schema(implementation = AuthenticationResponse.class))),
             @ApiResponse(responseCode = UNAUTHORIZED_401, description = UNAUTHORIZED,
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+                    content = @Content(schema = @Schema(implementation = UnauthorizedErrorResponse.class)))
     })
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @Valid @RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getUsername());
 

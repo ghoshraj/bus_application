@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.ErrorResponse;
+import com.example.demo.model.ForbiddenErrorResponse;
+import com.example.demo.model.UnauthorizedErrorResponse;
 import com.example.demo.model.UserResponse;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,9 +39,9 @@ public class AdminController {
             @ApiResponse(responseCode = OK_200, description = OK,
                     content = @Content(schema = @Schema(implementation = UserResponse.class))),
             @ApiResponse(responseCode = UNAUTHORIZED_401, description = UNAUTHORIZED,
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+                    content = @Content(schema = @Schema(implementation = UnauthorizedErrorResponse.class))),
             @ApiResponse(responseCode = FORBIDDEN_403, description = FORBIDDEN,
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+                    content = @Content(schema = @Schema(implementation = ForbiddenErrorResponse.class)))
     })
     public ResponseEntity<List<UserResponse>> getAllUser() {
         List<UserResponse> users = userService.findAll();
