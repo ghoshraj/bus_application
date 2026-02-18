@@ -7,7 +7,7 @@ public enum GlobalExceptionEnums {
 
     GENERIC_ERROR(1000, "Generic error occurred"),
 
-    USER_ALREADY_EXISTS(1100, "User already exists with email: %s"),
+    USER_ALREADY_EXISTS(1100, "User already exists with email/phone: %s"),
     USER_NOT_FOUND(1101, "User not found with email: %s"),
 
     INVALID_CREDENTIALS(1200, "Invalid credentials for user: %s"),
