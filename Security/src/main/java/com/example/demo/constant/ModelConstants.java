@@ -8,6 +8,7 @@ public class ModelConstants {
     public static final String USERNAME_REQUIRED = "username is required";
     public static final String PASSWORD_REQUIRED = "password is required";
     public static final String PHONE_REQUIRED = "phone number is required";
+    public static final String GENDER_REQUIRED = "gender is required";
     public static final String PHONE_INVALID = "phone number must be valid";
     public static final String EMAIL_REQUIRED = "email is required";
     public static final String EMAIL_INVALID = "email must be valid";
