@@ -29,7 +29,6 @@ import static com.example.demo.constant.ApiConstants.*;
 @Tag(name = AUTH_TAG, description = AUTH_TAG_DESC)
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtService jwtService;
     private final UserService userService;
@@ -57,12 +56,6 @@ public class AuthController {
     })
     public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getUsername());
-
-        String token = jwtService.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(token, LOGIN_SUCCESS));
+        return ResponseEntity.ok(userService.login(request));
     }
 }
