@@ -2,6 +2,7 @@ package com.example.demo.service.security;
 
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import com.example.demo.service.impl.UserPersistenceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,11 +18,11 @@ import static com.example.demo.constant.SecurityConstants.ROLE;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserService userService;
+    private final UserPersistenceServiceImpl userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findByName(username);
+        User user = userService.getUserByEmail(username);
 
         Set<String> roleNames = user.getRoles() != null
                 ? user.getRoles().stream()

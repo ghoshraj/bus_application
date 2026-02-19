@@ -35,6 +35,5 @@ public class RegisterRequest {
     @NotBlank(message = GENDER_REQUIRED)
     private String gender;
 
-    //why
 }
 

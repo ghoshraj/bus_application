@@ -6,11 +6,15 @@ import com.example.demo.exception.GlobalExceptionEnums;
 import com.example.demo.exception.UserAlreadyExistsException;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.mapper.UserMapper;
-import com.example.demo.model.RegisterRequest;
-import com.example.demo.model.RegisterResponse;
-import com.example.demo.model.UserResponse;
+import com.example.demo.model.*;
 import com.example.demo.service.UserService;
+import com.example.demo.service.security.CustomUserDetailsService;
+import com.example.demo.service.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +23,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.example.demo.constant.ApiConstants.LOGIN_SUCCESS;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
 
     private final UserPersistenceServiceImpl userPersistenceService;
+    private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final JwtService jwtService;
 
 
     @Override
@@ -41,6 +50,18 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException(GlobalExceptionEnums.USER_ALREADY_EXISTS, request.getPhoneNumber());
         }
         return userMapper.toRegisterResponse(savedUser);
+    }
+
+    @Override
+    public AuthenticationResponse login(AuthenticationRequest request) {
+        String token = null;
+        User user = userPersistenceService.getUserByEmail(request.getEmail());
+        if (user != null) {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getEmail());
+            token = jwtService.generateToken(userDetails);
+        }
+        return new AuthenticationResponse(token, LOGIN_SUCCESS);
     }
 
     @Override
