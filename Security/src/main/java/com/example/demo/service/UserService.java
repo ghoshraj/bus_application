@@ -19,7 +19,5 @@ public interface UserService {
 
     RegisterResponse registerUser(RegisterRequest request);
 
-    AuthenticationResponse login(AuthenticationRequest request);
-
     UserResponse assignRoles(Integer userId, Set<Roles> roles);
 }

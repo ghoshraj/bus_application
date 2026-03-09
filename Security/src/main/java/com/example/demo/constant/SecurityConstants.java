@@ -23,6 +23,8 @@ public final class SecurityConstants {
     public static final String ROLE = "ROLE_";
     public static final String ROLES = "roles";
 
+    public static final long EXPIRY_MINUTES = 15;
+
 
     // Prevent instantiation
     private SecurityConstants() {

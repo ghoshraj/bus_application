@@ -1,7 +1,6 @@
 package com.example.demo.service.security;
 
 import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
 import com.example.demo.service.impl.UserPersistenceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.getUserByEmail(username);
+        User user = userService.findByEmail(username);
 
         Set<String> roleNames = user.getRoles() != null
                 ? user.getRoles().stream()
