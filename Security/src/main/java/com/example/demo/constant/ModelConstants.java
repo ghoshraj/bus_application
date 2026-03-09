@@ -17,6 +17,7 @@ public class ModelConstants {
     // ===== TABLE NAMES =====
     public static final String USER_TABLE = "users";
     public static final String USER_ROLES_TABLE = "user_roles";
+    public static final String PASSWORD_RESET = "password_reset_token";
 
     // ===== COLUMN NAMES =====
     public static final String USER_ID = "user_id";
@@ -42,6 +43,8 @@ public class ModelConstants {
 
     // ===== TIMESTAMP EXAMPLE =====
     public static final String TIMESTAMP_EXAMPLE = "2026-02-05T14:45:59Z";
+
+    public static final String RESET_PASSWORD_LINK = "http://localhost:3000/reset-password?token=";
 
     private ModelConstants() {
 
