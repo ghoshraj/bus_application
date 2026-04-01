@@ -166,11 +166,9 @@ spring:
           filters:
             - StripPrefix=0
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          secret-key: BusApp_JWT_Secret_2026_StrongKey_9fA7xL2PqR8MZK
+security:
+  jwt:
+    secret: BusApp_JWT_Secret_2026_StrongKey_9fA7xL2PqR8MZK
 
 eureka:
   client:

@@ -119,6 +119,6 @@ public class GatewayConstants {
 
     // JWT properties
     public static final String JWT_SECRET_KEY_PROPERTY =
-            "spring.security.oauth2.resourceserver.jwt.secret-key";
+            "${security.jwt.secret}";
 
 }

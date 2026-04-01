@@ -22,6 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
 
         Set<String> roleNames = user.getRoles() != null
                 ? user.getRoles().stream()
@@ -30,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 : Set.of();
         String[] rolesArray = roleNames.toArray(new String[0]);
         return org.springframework.security.core.userdetails.User
-                .withUsername(user.getName())
+                .withUsername(user.getEmail())
                 .password(user.getPassword())
                 .roles(rolesArray)
                 .build();
