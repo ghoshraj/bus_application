@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.enums.Gender;
 import com.example.demo.enums.Roles;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class UserResponse {
     private String phoneNumber;
 
     @Schema(example = USER_GENDER_EXAMPLE)
-    private String gender;
+    private Gender gender;
 
     @Schema(description = USER_ROLES_DESC)
     private Set<Roles> roles;

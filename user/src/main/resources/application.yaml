@@ -40,3 +40,20 @@ logging:
 jwt:
   secret: VGhpcyBpcyBhIHZlcnkgc2VjdXJlIGp3dCBzZWNyZXQgc3RyaW5nIHRoYXQgY2Fubm90IGJlIGd1ZXNzZWQ=
   expiration: 86400000
+
+
+kafka:
+  bootstrap-servers: localhost:9092
+
+  topic:
+    traveller: traveller-create-topic
+
+  group:
+    traveller: traveller-group
+
+  consumer:
+    max-attempts: 3        # number of retries
+    retry-interval: 1000   # in milliseconds (1 second)
+
+  listener:
+    concurrency: 3

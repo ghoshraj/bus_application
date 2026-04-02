@@ -56,3 +56,19 @@ logging:
 jwt:
   secret: BusApp_JWT_Secret_2026_StrongKey_9fA7xL2PqR8MZK
   expiration: 86400000
+
+kafka:
+  bootstrap-servers: localhost:9092
+
+  topic:
+    traveller: traveller-create-topic
+
+  group:
+    traveller: traveller-group
+
+  consumer:
+    max-attempts: 3        # number of retries
+    retry-interval: 1000   # in milliseconds (1 second)
+
+  listener:
+    concurrency: 3         # optional (for parallel consumers)
