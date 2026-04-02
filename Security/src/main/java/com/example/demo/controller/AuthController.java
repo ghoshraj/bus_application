@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.*;
 import com.example.demo.service.AuthService;
 import com.example.demo.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,7 +38,7 @@ public class AuthController {
             @ApiResponse(responseCode = BAD_REQUEST_400, description = BAD_REQUEST,
                     content = @Content(schema = @Schema(implementation = BadRequestErrorResponse.class)))
     })
-    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) throws JsonProcessingException {
 
         return ResponseEntity.ok(userService.registerUser(request));
     }

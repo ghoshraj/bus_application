@@ -8,11 +8,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
@@ -20,23 +21,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final TravellerProfileService travellerProfileService;
-
-    @Operation(summary = "Create traveller profile")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Profile created successfully",
-                    content = @Content(schema = @Schema(implementation = TravellerProfiles.class))),
-            @ApiResponse(responseCode = "400", description = "Validation error",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    @PostMapping("/profile")
-    public ResponseEntity<TravellerProfiles> createProfile(@Valid @RequestBody TravellerProfiles profile) {
-        TravellerProfiles savedProfile = travellerProfileService.createProfile(profile);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProfile);
-    }
 
     @Operation(summary = "Get traveller profile by user ID")
     @ApiResponses({

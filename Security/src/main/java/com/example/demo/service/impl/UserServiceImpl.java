@@ -10,6 +10,7 @@ import com.example.demo.model.RegisterRequest;
 import com.example.demo.model.RegisterResponse;
 import com.example.demo.model.UserResponse;
 import com.example.demo.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public RegisterResponse registerUser(RegisterRequest request) {
+    public RegisterResponse registerUser(RegisterRequest request) throws JsonProcessingException {
 
         User savedUser = null;
         if (userPersistenceService.findByPhone(request.getPhoneNumber()) == null) {

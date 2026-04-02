@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.enums.Gender;
 import com.example.demo.enums.Roles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -27,7 +28,7 @@ public class User {
     private String password;
 
     private String phoneNumber;
-    private String gender;
+    private Gender gender;
     private String isBus;
     private String isAdmin;
 
