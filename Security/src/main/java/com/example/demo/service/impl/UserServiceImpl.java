@@ -20,9 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.example.demo.mapper.UserMapper.createdBy;
 
 @Slf4j
 @Service
@@ -60,6 +63,8 @@ public class UserServiceImpl implements UserService {
         log.info("Assigning roles {} to user {}", roles, userId);
         User user = findById(userId);
         user.setRoles(roles);
+        user.setUpdatedAt(Instant.now());
+        user.setUpdatedBy("ADMIN");
         User updatedUser = userPersistenceService.updateUser(user);
         log.info("Roles updated successfully for user {}", userId);
         return userMapper.toUserResponse(updatedUser);
@@ -70,6 +75,8 @@ public class UserServiceImpl implements UserService {
         log.info("invoking profile update request for user :{}", user_id);
         User user = findById(user_id);
         user.setStatus(ProfileStatus.COMPLETED);
+        user.setUpdatedAt(Instant.now());
+        user.setUpdatedBy(createdBy);
         userPersistenceService.updateUser(user);
         log.info("User status updated to COMPLETED for user: {}", user_id);
     }

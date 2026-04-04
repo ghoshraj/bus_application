@@ -22,6 +22,6 @@ public class KafkaConsumerImpl implements KafkaConsumer {
     @KafkaListener(topics = "${kafka.topic.response.traveller-update}", groupId = "${kafka.group.traveller-update}")
     public void listenProfileUpdateResponse(String msg) throws JsonProcessingException {
         ProfileStatusUpdateRequest profileStatusUpdateRequest = objectMapperHelper.fromJson(msg, ProfileStatusUpdateRequest.class);
-        userService.updateProfileStatus(profileStatusUpdateRequest.getUser_id());
+        userService.updateProfileStatus(profileStatusUpdateRequest.getUserId());
     }
 }

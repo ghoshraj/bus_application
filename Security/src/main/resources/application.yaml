@@ -20,10 +20,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
     database-platform: org.hibernate.dialect.MySQLDialect
 
   mail:
@@ -70,8 +70,8 @@ kafka:
     traveller-update: traveller-update-group
 
   consumer:
-    max-attempts: 3        # number of retries
-    retry-interval: 1000   # in milliseconds (1 second)
+    max-attempts: 3
+    retry-interval: 1000
 
   listener:
-    concurrency: 3         # optional (for parallel consumers)
+    concurrency: 3

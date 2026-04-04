@@ -9,12 +9,18 @@ import com.example.demo.model.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+
 @Component
 @RequiredArgsConstructor
 public class UserMapper {
 
+    public static final String createdBy = "system_user";
+
     public User toEntity(RegisterRequest request) {
         User user = new User();
+        user.setCreatedBy(createdBy);
+        user.setCreatedAt(Instant.now());
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());

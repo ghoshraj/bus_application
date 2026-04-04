@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -29,6 +30,12 @@ public class TravellerProfileServiceImpl implements TravellerProfileService {
     @Transactional
     public void createProfile(TravellerProfiles profile) throws JsonProcessingException {
         log.info("Creating profile for user {}", profile.getUserId());
+        Optional<TravellerProfiles> travellerProfilesExist = travellerProfilePersistence.findByUserId(profile.getUserId());
+        if (travellerProfilesExist.isPresent()) {
+            log.info("Profile already exists for user {}", profile.getUserId());
+            kafkaProducer.sendProfileRequest(new ProfileUpdateRequest(profile.getUserId()));
+            return;
+        }
         TravellerProfiles travellerProfiles = new TravellerProfiles();
         travellerProfiles.setCreatedAt(Instant.now());
         travellerProfiles.setCreatedBy(systemUser);
@@ -42,7 +49,7 @@ public class TravellerProfileServiceImpl implements TravellerProfileService {
         travellerProfiles.setWalletBalance(0L);
         travellerProfilePersistence.save(travellerProfiles);
         log.info("Profile created successfully for user {}", profile.getUserId());
-        kafkaProducer.sendProfileRequest(new ProfileUpdateRequest(profile.getUserId()));
+        kafkaProducer.sendProfileRequest(new ProfileUpdateRequest(travellerProfiles.getUserId()));
     }
 
     @Override

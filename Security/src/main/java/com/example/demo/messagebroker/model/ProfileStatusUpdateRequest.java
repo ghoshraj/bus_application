@@ -9,5 +9,5 @@ import lombok.*;
 @NoArgsConstructor
 public class ProfileStatusUpdateRequest {
 
-    private int user_id;
+    private int userId;
 }

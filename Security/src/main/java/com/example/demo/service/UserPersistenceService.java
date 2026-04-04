@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.User;
+import com.example.demo.enums.ProfileStatus;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface UserPersistenceService {
     User findByPhone(String phoneNumber);
 
     User findByName(String name);
+
+    List<User> findByStatus(ProfileStatus status);
 }

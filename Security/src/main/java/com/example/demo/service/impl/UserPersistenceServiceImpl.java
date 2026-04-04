@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.User;
+import com.example.demo.enums.ProfileStatus;
 import com.example.demo.repository.UserRepo;
 import com.example.demo.service.UserPersistenceService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,13 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
     public User findByName(String name) {
         return userRepo.findByName(name)
                 .orElse(null);
+    }
+
+    @Override
+    public List<User> findByStatus(ProfileStatus status) {
+        List<User> user =  userRepo.findByStatus(status);
+        if (user != null) return user;
+        return List.of();
     }
 
     @Override
