@@ -4,5 +4,5 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface KafkaConsumer {
 
-    void listenTravellerResponse(String msg) throws JsonProcessingException;
+    void listenProfileUpdateResponse(String msg) throws JsonProcessingException;
 }

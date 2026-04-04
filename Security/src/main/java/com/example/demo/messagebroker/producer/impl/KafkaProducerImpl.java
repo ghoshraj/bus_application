@@ -15,16 +15,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaProducerImpl implements KafkaProducer {
 
-    @Value("${kafka.topic.traveller}")
+    @Value("${kafka.topic.request.traveller-create}")
     private String travellerTopic;
 
     private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
-    public void sendRequest(TravellerProfileRequest travellerProfileRequest) throws JsonProcessingException {
+    public void sendProfileCreationRequest(TravellerProfileRequest travellerProfileRequest) throws JsonProcessingException {
         kafkaTemplate.send(travellerTopic, objectMapper.writeValueAsString(travellerProfileRequest));
-        log.info("Sent successfully to topic {}", travellerTopic);
     }
-
 }

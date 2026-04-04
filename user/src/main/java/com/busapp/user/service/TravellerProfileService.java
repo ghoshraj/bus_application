@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface TravellerProfileService {
 
-    void createProfile(String msg) throws JsonProcessingException;
-    
+    void createProfile(TravellerProfiles profile) throws JsonProcessingException;
+
     TravellerProfiles getProfileByUserId(Integer userId);
 }

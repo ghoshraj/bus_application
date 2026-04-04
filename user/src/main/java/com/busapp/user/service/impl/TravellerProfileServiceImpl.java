@@ -1,33 +1,37 @@
 package com.busapp.user.service.impl;
 
-import com.busapp.user.config.ObjectMapperHelper;
 import com.busapp.user.entity.TravellerProfiles;
 import com.busapp.user.exception.GlobalExceptionEnums;
 import com.busapp.user.exception.UserNotFound;
+import com.busapp.user.messagebroker.model.ProfileUpdateRequest;
+import com.busapp.user.messagebroker.producer.KafkaProducer;
 import com.busapp.user.service.TravellerProfileService;
 import com.busapp.user.service.persistence.TravellerProfilePersistence;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TravellerProfileServiceImpl implements TravellerProfileService {
 
+    private final String systemUser = "System";
     private final TravellerProfilePersistence travellerProfilePersistence;
-    private final ObjectMapperHelper objectMapperHelper;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     @Transactional
-    public void createProfile(String msg) throws JsonProcessingException {
-        TravellerProfiles profile = objectMapperHelper.fromJson(msg, TravellerProfiles.class);
+    public void createProfile(TravellerProfiles profile) throws JsonProcessingException {
+        log.info("Creating profile for user {}", profile.getUserId());
         TravellerProfiles travellerProfiles = new TravellerProfiles();
         travellerProfiles.setCreatedAt(Instant.now());
-        travellerProfiles.setCreatedBy("");
+        travellerProfiles.setCreatedBy(systemUser);
         travellerProfiles.setUserId(profile.getUserId());
         travellerProfiles.setName(profile.getName());
         travellerProfiles.setJoiningDate(LocalDate.now());
@@ -37,6 +41,8 @@ public class TravellerProfileServiceImpl implements TravellerProfileService {
         travellerProfiles.setTotalTravel(0);
         travellerProfiles.setWalletBalance(0L);
         travellerProfilePersistence.save(travellerProfiles);
+        log.info("Profile created successfully for user {}", profile.getUserId());
+        kafkaProducer.sendProfileRequest(new ProfileUpdateRequest(profile.getUserId()));
     }
 
     @Override

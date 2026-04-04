@@ -1,5 +1,6 @@
 package com.busapp.user.model;
 
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.time.Instant;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
+@MappedSuperclass
 public class BaseCollection {
 
     private String createdBy;
