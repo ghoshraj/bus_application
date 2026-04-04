@@ -14,6 +14,7 @@ import com.example.demo.service.EmailService;
 import com.example.demo.service.security.CustomUserDetailsService;
 import com.example.demo.service.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,7 @@ import static com.example.demo.constant.ApiConstants.LOGIN_SUCCESS;
 import static com.example.demo.constant.ModelConstants.RESET_PASSWORD_LINK;
 import static com.example.demo.constant.SecurityConstants.EXPIRY_MINUTES;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -41,6 +43,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthenticationResponse login(AuthenticationRequest request) {
+        log.info("invoking email for login :{}", request.getEmail());
         String token = null;
         User user = userPersistenceService.findByEmail(request.getEmail());
         if (user != null) {
@@ -48,13 +51,14 @@ public class AuthServiceImpl implements AuthService {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getEmail());
             token = jwtService.generateToken(userDetails);
         }
+        log.info("exiting from login successfully :");
         return new AuthenticationResponse(token, LOGIN_SUCCESS);
     }
 
     @Override
     public void forgotPassword(String email) {
         User user = userPersistenceService.findByEmail(email);
-
+        log.info("forgot password for email :{}",email);
         if (user == null)
             throw new UserAlreadyExistsException(GlobalExceptionEnums.USER_ALREADY_EXISTS, email);
 

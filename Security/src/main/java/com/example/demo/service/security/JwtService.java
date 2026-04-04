@@ -1,5 +1,6 @@
 package com.example.demo.service.security;
 
+import com.example.demo.model.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -67,6 +68,8 @@ public class JwtService {
                 .map(authority -> authority.replace(ROLE, ""))
                 .collect(Collectors.toList());
         claims.put(ROLES, roles);
+        CustomUserDetails customUser = (CustomUserDetails) userDetails;
+        claims.put("user_id", customUser.getUserId());
         return createToken(claims, userDetails.getUsername());
     }
 

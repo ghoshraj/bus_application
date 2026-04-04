@@ -28,6 +28,7 @@ public class User {
     private String password;
 
     private String phoneNumber;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     private String isBus;
     private String isAdmin;
