@@ -1,4 +1,4 @@
-package com.busapp.user.model;
+package com.example.demo.model;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;

@@ -20,10 +20,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
     database-platform: org.hibernate.dialect.MySQLDialect
 
 eureka:
@@ -46,10 +46,13 @@ kafka:
   bootstrap-servers: localhost:9092
 
   topic:
-    traveller: traveller-create-topic
+    request:
+      traveller-create: traveller-create-topic
+    response:
+      traveller-update: traveller-update-topic
 
   group:
-    traveller: traveller-group
+    traveller-create: traveller-create-group
 
   consumer:
     max-attempts: 3        # number of retries

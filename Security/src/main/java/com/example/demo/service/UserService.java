@@ -21,4 +21,6 @@ public interface UserService {
     RegisterResponse registerUser(RegisterRequest request) throws JsonProcessingException;
 
     UserResponse assignRoles(Integer userId, Set<Roles> roles);
+
+    void updateProfileStatus(int user_id);
 }

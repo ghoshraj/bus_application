@@ -5,5 +5,5 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface KafkaProducer {
 
-    void sendRequest(TravellerProfileRequest travellerProfileRequest) throws JsonProcessingException;
+    void sendProfileCreationRequest(TravellerProfileRequest travellerProfileRequest) throws JsonProcessingException;
 }

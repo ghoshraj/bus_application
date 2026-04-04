@@ -1,7 +1,9 @@
 package com.example.demo.entity;
 
 import com.example.demo.enums.Gender;
+import com.example.demo.enums.ProfileStatus;
 import com.example.demo.enums.Roles;
+import com.example.demo.model.BaseCollection;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -14,7 +16,7 @@ import static com.example.demo.constant.ModelConstants.*;
 @Entity
 @Data
 @Table(name = USER_TABLE)
-public class User {
+public class User extends BaseCollection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +32,10 @@ public class User {
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    private String isBus;
-    private String isAdmin;
+
+    @Column(name = "profile_status")
+    @Enumerated(EnumType.STRING)
+    private ProfileStatus status;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
