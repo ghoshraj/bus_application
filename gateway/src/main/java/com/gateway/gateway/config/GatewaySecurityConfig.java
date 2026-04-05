@@ -35,6 +35,7 @@ public class GatewaySecurityConfig {
                         .pathMatchers(AUTH_ALL)
                         .permitAll()
 
+                        .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Swagger & Public resources
                         .pathMatchers(
                                 SWAGGER_UI_HTML, SWAGGER_UI, WEBJARS, API_DOCS,

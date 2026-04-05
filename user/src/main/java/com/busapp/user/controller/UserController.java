@@ -2,6 +2,7 @@ package com.busapp.user.controller;
 
 import com.busapp.user.entity.TravellerProfiles;
 import com.busapp.user.model.ErrorResponse;
+import com.busapp.user.model.TravellerProfileResponse;
 import com.busapp.user.service.TravellerProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,7 +26,7 @@ public class UserController {
     @Operation(summary = "Get traveller profile by user ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Profile found",
-                    content = @Content(schema = @Schema(implementation = TravellerProfiles.class))),
+                    content = @Content(schema = @Schema(implementation = TravellerProfileResponse.class))),
             @ApiResponse(responseCode = "404", description = "Profile not found",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -34,8 +35,8 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<TravellerProfiles> getUserById(@PathVariable Integer id) {
-        TravellerProfiles profile = travellerProfileService.getProfileByUserId(id);
+    public ResponseEntity<TravellerProfileResponse> getUserById(@PathVariable Integer id) {
+        TravellerProfileResponse profile = travellerProfileService.getProfileByUserId(id);
         return ResponseEntity.ok(profile);
     }
 }

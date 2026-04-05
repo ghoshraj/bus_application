@@ -5,6 +5,7 @@ import com.busapp.user.exception.GlobalExceptionEnums;
 import com.busapp.user.exception.UserNotFound;
 import com.busapp.user.messagebroker.model.ProfileUpdateRequest;
 import com.busapp.user.messagebroker.producer.KafkaProducer;
+import com.busapp.user.model.TravellerProfileResponse;
 import com.busapp.user.service.TravellerProfileService;
 import com.busapp.user.service.persistence.TravellerProfilePersistence;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -53,9 +54,19 @@ public class TravellerProfileServiceImpl implements TravellerProfileService {
     }
 
     @Override
-    public TravellerProfiles getProfileByUserId(Integer userId) {
-        return travellerProfilePersistence.findByUserId(userId)
+    public TravellerProfileResponse getProfileByUserId(Integer userId) {
+        log.info("Fetching traveller profile for userId: {}", userId);
+        TravellerProfiles profiles = travellerProfilePersistence.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFound(
                         GlobalExceptionEnums.USER_NOT_FOUND, userId));
+        TravellerProfileResponse profileResponse = new TravellerProfileResponse();
+        profileResponse.setUserName(profiles.getName());
+        profileResponse.setPhoneNumber(profiles.getPhoneNumber());
+        profileResponse.setTotalTravel(profiles.getTotalTravel());
+        profileResponse.setTotalTrip(profiles.getTotalTrip());
+        profileResponse.setJoiningDate(profiles.getJoiningDate());
+        profileResponse.setWalletBalance(profiles.getWalletBalance());
+        log.info("Successfully fetched traveller profile for userId: {}", userId);
+        return profileResponse;
     }
 }
