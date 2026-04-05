@@ -50,6 +50,7 @@ public class GatewaySecurityConfig {
                                 FAVICON
                         ).permitAll()
 
+                        .pathMatchers(HttpMethod.GET, "/vehicle/count/**").permitAll()
                         // ADMIN & SUPER_ADMIN (GET)
                         .pathMatchers(HttpMethod.GET,
                                 COMPANY_BY_ID, COMPANY_REGISTRATION)

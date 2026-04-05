@@ -33,7 +33,6 @@ public class TravelCompanyPersistenceService implements TravelCompanyPersistence
 
     @Override
     public TravelCompany findByCompanyRegistrationNumber(String companyRegistrationNumber) {
-        log.debug("Finding travel company by registration number: {}", companyRegistrationNumber);
         Optional<TravelCompany> company = travelCompanyRepo
                 .findByCompanyRegistrationNumber(companyRegistrationNumber);
         return company.orElse(null);

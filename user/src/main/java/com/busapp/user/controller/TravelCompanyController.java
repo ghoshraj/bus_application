@@ -2,6 +2,7 @@ package com.busapp.user.controller;
 
 import com.busapp.user.entity.TravelCompany;
 import com.busapp.user.model.ErrorResponse;
+import com.busapp.user.model.TravelCompanyRequest;
 import com.busapp.user.service.TravelCompanys;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,7 +39,7 @@ public class TravelCompanyController {
     })
     @PostMapping("/apply")
     public ResponseEntity<TravelCompany> createCompany(
-            @Valid @RequestBody TravelCompany travelCompany) {
+            @Valid @RequestBody TravelCompanyRequest travelCompany) {
 
         TravelCompany savedCompany = travelCompanys.addTravelCompany(travelCompany);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCompany);

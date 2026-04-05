@@ -18,7 +18,7 @@ public class Operator extends BaseCollection {
     private Integer id;
     private int userId;
     private int vehicleId;
-    private int CompanyId;
+    private int companyId;
 
     @Column(nullable = false)
     @NotNull(message = "yearsOfExperience required")

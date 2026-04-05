@@ -39,4 +39,9 @@ public class OperatorPersistenceServiceImpl implements OperatorPersistence {
     public Optional<Operator> findByVehicleId(Integer vehicleId) {
         return operatorRepository.findByVehicleId(vehicleId);
     }
+
+    @Override
+    public Long getDriverCount(Integer companyId){
+     return operatorRepository.countByCompanyId(companyId);
+    }
 }

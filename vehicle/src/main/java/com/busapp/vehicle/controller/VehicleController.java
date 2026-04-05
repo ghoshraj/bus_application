@@ -3,6 +3,7 @@ package com.busapp.vehicle.controller;
 import com.busapp.vehicle.entity.Vehicle;
 import com.busapp.vehicle.model.ErrorResponse;
 import com.busapp.vehicle.service.VehicleService;
+import com.busapp.vehicle.service.persistence.VehiclePersistence;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,6 +25,7 @@ import java.util.List;
 public class VehicleController {
 
     private final VehicleService vehicleService;
+    private final VehiclePersistence vehiclePersistence;
 
     @Operation(summary = "Create vehicle", description = "Create a new vehicle. Accessible by ADMIN role.")
     @ApiResponses({
@@ -87,5 +89,10 @@ public class VehicleController {
     public ResponseEntity<List<Vehicle>> getVehiclesByCompanyId(@PathVariable int companyId) {
         List<Vehicle> vehicles = vehicleService.getVehiclesByCompanyId(companyId);
         return ResponseEntity.ok(vehicles);
+    }
+
+    @GetMapping("/count/{companyId}")
+    public long getVehicleCount(@PathVariable Integer companyId) {
+        return vehiclePersistence.countByCompanyId(companyId);
     }
 }

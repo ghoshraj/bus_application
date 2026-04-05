@@ -14,4 +14,6 @@ public interface VehiclePersistence {
     Optional<Vehicle> getVehicleById(Integer id);
     
     List<Vehicle> getVehiclesByCompanyId(int companyId);
+
+    long countByCompanyId(Integer companyId);
 }

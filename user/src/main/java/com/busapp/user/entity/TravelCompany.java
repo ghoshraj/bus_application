@@ -20,7 +20,6 @@ public class TravelCompany extends BaseCollection {
     private String gstNumber;
     private String companyRegistrationNumber;
     private Status status;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;

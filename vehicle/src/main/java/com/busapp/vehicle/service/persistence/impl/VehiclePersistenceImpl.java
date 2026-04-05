@@ -34,4 +34,9 @@ public class VehiclePersistenceImpl implements VehiclePersistence {
     public List<Vehicle> getVehiclesByCompanyId(int companyId) {
         return vehicleRepository.findByCompanyId(companyId);
     }
+
+    @Override
+    public long countByCompanyId(Integer companyId){
+        return vehicleRepository.countByCompanyId(companyId);
+    }
 }

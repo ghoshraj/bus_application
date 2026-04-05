@@ -20,10 +20,9 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public Operator createOperator(Operator operator) {
         Optional<Operator> operator1 = operatorPersistence.findByAdharCardNumber(operator.getAdharCardNumber());
-        if (operator1.isEmpty()){
+        if (operator1.isEmpty()) {
             return operatorPersistence.save(operator);
-        }
-        else {
+        } else {
             throw new RuntimeException("Driver already register with this adharNumber : " + operator.getAdharCardNumber());
         }
     }

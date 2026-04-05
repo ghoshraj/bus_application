@@ -60,3 +60,6 @@ kafka:
 
   listener:
     concurrency: 3
+
+serviceUrl:
+  vehicle: /vehicle/count/{companyId}
