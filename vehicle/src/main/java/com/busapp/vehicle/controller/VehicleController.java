@@ -2,6 +2,8 @@ package com.busapp.vehicle.controller;
 
 import com.busapp.vehicle.entity.Vehicle;
 import com.busapp.vehicle.model.ErrorResponse;
+import com.busapp.vehicle.model.VehicleRequest;
+import com.busapp.vehicle.model.VehicleResponse;
 import com.busapp.vehicle.service.VehicleService;
 import com.busapp.vehicle.service.persistence.VehiclePersistence;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,34 +32,17 @@ public class VehicleController {
     @Operation(summary = "Create vehicle", description = "Create a new vehicle. Accessible by ADMIN role.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Vehicle created successfully",
-                    content = @Content(schema = @Schema(implementation = Vehicle.class))),
+                    content = @Content(schema = @Schema(implementation = VehicleResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid request data",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "403", description = "Forbidden - Access denied",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/applyvehicle")
-    public ResponseEntity<Vehicle> createVehicle(
-            @Valid @RequestBody Vehicle vehicle) {
+    public ResponseEntity<VehicleResponse> createVehicle(
+            @Valid @RequestBody VehicleRequest vehicle) {
 
-        Vehicle savedVehicle = vehicleService.applyVehicle(vehicle);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedVehicle);
-    }
-
-    @Operation(summary = "Create bus", description = "Create a new bus vehicle. Accessible by ADMIN role.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Bus created successfully",
-                    content = @Content(schema = @Schema(implementation = Vehicle.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid request data",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden - Access denied",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    @PostMapping("/applybuse")
-    public ResponseEntity<Vehicle> createBus(
-            @Valid @RequestBody Vehicle vehicle) {
-
-        Vehicle savedVehicle = vehicleService.applyVehicle(vehicle);
+        VehicleResponse savedVehicle = vehicleService.applyVehicle(vehicle);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedVehicle);
     }
 

@@ -1,6 +1,7 @@
 package com.busapp.vehicle.entity;
 
-import com.busapp.vehicle.enums.Status;
+import com.busapp.vehicle.enums.BookingStatus;
+import com.busapp.vehicle.enums.BusType;
 import com.busapp.vehicle.model.BaseCollection;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -17,13 +18,14 @@ public class Vehicle extends BaseCollection {
     private Integer id;
     private int companyId;
     private String vehicleNumber;
-    private String vehicleType;
     private String vehicleModel;
-    private String totalSeats;
+    private Integer totalSeats;
     private String vehicleColor;
     private String vehicleImage;
-    private Status status;
-
+    @Enumerated(EnumType.STRING)
+    private BookingStatus bookingStatus;
+    @Enumerated(EnumType.STRING)
+    private BusType busType;
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Seats> seats;
 }
