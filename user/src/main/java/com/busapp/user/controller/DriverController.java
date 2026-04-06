@@ -2,6 +2,7 @@ package com.busapp.user.controller;
 
 import com.busapp.user.entity.Operator;
 import com.busapp.user.model.ErrorResponse;
+import com.busapp.user.model.OperatorResponse;
 import com.busapp.user.service.OperatorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,7 +31,7 @@ public class DriverController {
     @Operation(summary = "Create a new driver")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Driver created successfully",
-                    content = @Content(schema = @Schema(implementation = Operator.class))),
+                    content = @Content(schema = @Schema(implementation = OperatorResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "403", description = "Forbidden",

@@ -8,8 +8,9 @@ public enum GlobalExceptionEnums {
     GENERIC_ERROR(1000, "Generic error occurred"),
 
     COMPANY_ALREADY_EXIST(1100, "Company already exists with registrationId: %s"),
-    COMPANY_NOT_FOUND(1101, "User not found with email: %s"),
-    USER_NOT_FOUND(1102, "User not found with id: %s"),
+    DRIVER_ALREADY_EXIST(1101, "Driver already register with this adharNumber: %s"),
+    COMPANY_NOT_FOUND(1102, "User not found with email: %s"),
+    USER_NOT_FOUND(1103, "User not found with id: %s"),
 
     VALIDATION_FAILED(1300, "Validation failed: %s");
 

@@ -1,6 +1,8 @@
 package com.busapp.user.service.impl;
 
 import com.busapp.user.entity.Operator;
+import com.busapp.user.exception.DriverAlreadyExist;
+import com.busapp.user.exception.GlobalExceptionEnums;
 import com.busapp.user.service.OperatorService;
 import com.busapp.user.service.persistence.OperatorPersistence;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,7 @@ public class OperatorServiceImpl implements OperatorService {
         if (operator1.isEmpty()) {
             return operatorPersistence.save(operator);
         } else {
-            throw new RuntimeException("Driver already register with this adharNumber : " + operator.getAdharCardNumber());
+            throw new DriverAlreadyExist(GlobalExceptionEnums.DRIVER_ALREADY_EXIST, operator.getAdharCardNumber());
         }
     }
 
