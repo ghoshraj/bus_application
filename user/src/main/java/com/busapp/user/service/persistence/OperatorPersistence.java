@@ -16,5 +16,7 @@ public interface OperatorPersistence {
     Optional<Operator>findByAdharCardNumber(String adharNumber);
     
     Optional<Operator> findByVehicleId(Integer vehicleId);
+
+    Long getDriverCount(Integer companyId);
 }
 

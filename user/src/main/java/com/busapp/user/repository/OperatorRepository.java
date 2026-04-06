@@ -15,4 +15,6 @@ public interface OperatorRepository extends JpaRepository<Operator, Integer> {
     Optional<Operator> findByAdharCardNumber(String adharNumber);
     
     Optional<Operator> findByVehicleId(Integer vehicleId);
+
+    long countByCompanyId(Integer companyId);
 }
