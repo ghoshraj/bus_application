@@ -2,6 +2,7 @@ package com.busapp.user.controller;
 
 import com.busapp.user.entity.Operator;
 import com.busapp.user.model.ErrorResponse;
+import com.busapp.user.model.OperatorRequest;
 import com.busapp.user.model.OperatorResponse;
 import com.busapp.user.service.OperatorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +40,8 @@ public class DriverController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/apply")
-    public ResponseEntity<Operator> createDriver(@RequestBody Operator operator) {
-        Operator savedDriver = operatorService.createOperator(operator);
+    public ResponseEntity<OperatorResponse> createDriver(@Valid @RequestBody OperatorRequest operator) {
+        OperatorResponse savedDriver = operatorService.createOperator(operator);
         return new ResponseEntity<>(savedDriver, HttpStatus.CREATED);
     }
 

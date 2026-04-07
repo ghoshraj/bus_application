@@ -57,15 +57,10 @@ public class TravelCompanysService implements TravelCompanys {
     public TravelCompany getById(Integer id) {
         log.info("Fetching travel company by ID: {}", id);
         TravelCompany company = travelCompanyPersistence.findById(id);
-
         if (company == null) {
             log.warn("Travel company not found with ID: {}", id);
-            throw new TravelCompanyNotFound(
-                    GlobalExceptionEnums.COMPANY_NOT_FOUND,
-                    String.valueOf(id)
-            );
+            throw new TravelCompanyNotFound(GlobalExceptionEnums.COMPANY_NOT_FOUND, String.valueOf(id));
         }
-
         log.info("Successfully retrieved travel company with ID: {}", id);
         return company;
     }
