@@ -1,8 +1,8 @@
 package com.busapp.user.service.impl;
 
 import com.busapp.user.entity.TravellerProfiles;
+import com.busapp.user.exception.BusinessException;
 import com.busapp.user.exception.GlobalExceptionEnums;
-import com.busapp.user.exception.UserNotFound;
 import com.busapp.user.messagebroker.model.ProfileUpdateRequest;
 import com.busapp.user.messagebroker.producer.KafkaProducer;
 import com.busapp.user.model.TravellerProfileResponse;
@@ -57,8 +57,7 @@ public class TravellerProfileServiceImpl implements TravellerProfileService {
     public TravellerProfileResponse getProfileByUserId(Integer userId) {
         log.info("Fetching traveller profile for userId: {}", userId);
         TravellerProfiles profiles = travellerProfilePersistence.findByUserId(userId)
-                .orElseThrow(() -> new UserNotFound(
-                        GlobalExceptionEnums.USER_NOT_FOUND, userId));
+                .orElseThrow(() -> new BusinessException(GlobalExceptionEnums.USER_NOT_FOUND, userId));
         TravellerProfileResponse profileResponse = new TravellerProfileResponse();
         profileResponse.setUserName(profiles.getName());
         profileResponse.setPhoneNumber(profiles.getPhoneNumber());

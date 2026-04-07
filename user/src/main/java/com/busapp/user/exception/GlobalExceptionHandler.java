@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(TravelCompanyAlreadyExist.class)
-    public final ResponseEntity<ErrorResponse> handleUserAlreadyExists(TravelCompanyAlreadyExist ex) {
+    @ExceptionHandler(BusinessException.class)
+    public final ResponseEntity<ErrorResponse> handleUserAlreadyExists(BusinessException ex) {
 
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(ex.getMessage());
@@ -23,30 +23,6 @@ public class GlobalExceptionHandler {
         errorResponse.setErrorCode(ex.getErrorCode());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(TravelCompanyNotFound.class)
-    public final ResponseEntity<ErrorResponse> handleTravelCompanyNotFound(
-            TravelCompanyNotFound ex) {
-
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(ex.getMessage());
-        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
-        errorResponse.setErrorCode(ex.getErrorCode());
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(com.busapp.user.exception.UserNotFound.class)
-    public final ResponseEntity<ErrorResponse> handleUserNotFound(
-            com.busapp.user.exception.UserNotFound ex) {
-
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(ex.getMessage());
-        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
-        errorResponse.setErrorCode(ex.getErrorCode());
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
