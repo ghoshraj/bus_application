@@ -1,9 +1,8 @@
 package com.busapp.user.service.impl;
 
 import com.busapp.user.entity.TravelCompany;
+import com.busapp.user.exception.BusinessException;
 import com.busapp.user.exception.GlobalExceptionEnums;
-import com.busapp.user.exception.TravelCompanyAlreadyExist;
-import com.busapp.user.exception.TravelCompanyNotFound;
 import com.busapp.user.mapper.TravelCompanysMapper;
 import com.busapp.user.messagebroker.client.VehicleClient;
 import com.busapp.user.model.TravelCompanyRequest;
@@ -36,7 +35,7 @@ public class TravelCompanysService implements TravelCompanys {
 
         if (existingCompany != null) {
             log.warn("Travel company already exists with registration number: {}", travelCompany.getCompanyRegistrationNumber());
-            throw new TravelCompanyAlreadyExist(GlobalExceptionEnums.COMPANY_ALREADY_EXIST,
+            throw new BusinessException(GlobalExceptionEnums.COMPANY_ALREADY_EXIST,
                     travelCompany.getCompanyRegistrationNumber());
         }
 
@@ -45,8 +44,12 @@ public class TravelCompanysService implements TravelCompanys {
         //minimum required vehicle should be 2 and operator should be 6.
         long driverCount = operatorPersistence.getDriverCount(savedCompany.getId());
         long vehicleCount = vehicleClient.getVehicleCount(savedCompany.getId());
-        if (vehicleCount < 2 || driverCount < 6) {
-            throw new RuntimeException("your requirement is not match");
+        long requiredDrivers = vehicleCount * 3;
+        if (vehicleCount < 2) {
+            throw new BusinessException(GlobalExceptionEnums.COMPANY_RESOURCE_REQUIREMENT_NOT_MET, vehicleCount);
+        }
+        if (requiredDrivers < driverCount) {
+            throw new BusinessException(GlobalExceptionEnums.COMPANY_DRIVER_REQUIREMENT_NOT_MET, driverCount);
         }
         log.info("Successfully added travel company with ID: {}", savedCompany.getId());
 
@@ -57,15 +60,10 @@ public class TravelCompanysService implements TravelCompanys {
     public TravelCompany getById(Integer id) {
         log.info("Fetching travel company by ID: {}", id);
         TravelCompany company = travelCompanyPersistence.findById(id);
-
         if (company == null) {
             log.warn("Travel company not found with ID: {}", id);
-            throw new TravelCompanyNotFound(
-                    GlobalExceptionEnums.COMPANY_NOT_FOUND,
-                    String.valueOf(id)
-            );
+            throw new BusinessException(GlobalExceptionEnums.COMPANY_NOT_FOUND, String.valueOf(id));
         }
-
         log.info("Successfully retrieved travel company with ID: {}", id);
         return company;
     }
@@ -73,18 +71,12 @@ public class TravelCompanysService implements TravelCompanys {
     @Override
     public TravelCompany getByCompanyRegistrationNumber(String registrationNumber) {
         log.info("Fetching travel company by registration number: {}", registrationNumber);
-
         TravelCompany company = travelCompanyPersistence
                 .findByCompanyRegistrationNumber(registrationNumber.trim());
-
         if (company == null) {
             log.warn("Travel company not found with registration number: {}", registrationNumber);
-            throw new TravelCompanyNotFound(
-                    GlobalExceptionEnums.COMPANY_NOT_FOUND,
-                    registrationNumber
-            );
+            throw new BusinessException(GlobalExceptionEnums.COMPANY_NOT_FOUND, registrationNumber);
         }
-
         log.info("Successfully retrieved travel company with registration number: {}", registrationNumber);
         return company;
     }
