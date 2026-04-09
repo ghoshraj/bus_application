@@ -4,7 +4,6 @@ import com.busapp.user.entity.TravelCompany;
 import com.busapp.user.model.ErrorResponse;
 import com.busapp.user.model.TravelCompanyRequest;
 import com.busapp.user.model.TravelCompanyResponse;
-import com.busapp.user.model.TravellerProfileResponse;
 import com.busapp.user.service.TravelCompanys;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,12 +40,16 @@ public class TravelCompanyController {
     })
     @PostMapping("/apply")
     public ResponseEntity<TravelCompanyResponse> createCompany(
-            @Valid @RequestBody TravelCompanyRequest travelCompany,
-     @RequestHeader("Authorization") String authHeader) {
-
-        String token = authHeader.replace("Bearer ", "");
-        TravelCompanyResponse savedCompany = travelCompanys.addTravelCompany(travelCompany, token);
+            @Valid @RequestBody TravelCompanyRequest travelCompany) {
+        TravelCompanyResponse savedCompany = travelCompanys.addTravelCompany(travelCompany);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCompany);
+    }
+
+    @PostMapping("/activate/{companyId}")
+    public ResponseEntity<?> activateCompany(@PathVariable Integer companyId, @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        travelCompanys.activateCompany(companyId, token);
+        return ResponseEntity.ok().build();
     }
 
     /**

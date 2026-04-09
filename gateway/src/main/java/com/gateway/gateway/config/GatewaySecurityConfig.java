@@ -51,6 +51,7 @@ public class GatewaySecurityConfig {
                         ).permitAll()
 
                         .pathMatchers(HttpMethod.GET, "/vehicle/count/**").permitAll()
+                        .pathMatchers(HttpMethod.PUT, "companies/activate/{companyId}").permitAll()
                         .pathMatchers(HttpMethod.POST, "/companies/drivers/apply")
                         .hasRole(USER)
                         .pathMatchers(HttpMethod.GET, "/buses/company/{companyId}")

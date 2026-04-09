@@ -1,10 +1,12 @@
 package com.busapp.user.service.impl;
 
 import com.busapp.user.entity.TravelCompany;
+import com.busapp.user.enums.Status;
 import com.busapp.user.exception.BusinessException;
 import com.busapp.user.exception.GlobalExceptionEnums;
 import com.busapp.user.mapper.TravelCompanysMapper;
 import com.busapp.user.messagebroker.client.VehicleClient;
+import com.busapp.user.model.ActivateCompanyResponse;
 import com.busapp.user.model.TravelCompanyRequest;
 import com.busapp.user.model.TravelCompanyResponse;
 import com.busapp.user.model.VehicleResponse;
@@ -18,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class TravelCompanysService implements TravelCompanys {
 
     private final TravelCompanyPersistence travelCompanyPersistence;
@@ -30,24 +32,35 @@ public class TravelCompanysService implements TravelCompanys {
 
     @Override
     @Transactional
-    public TravelCompanyResponse addTravelCompany(TravelCompanyRequest travelCompany, String token) {
+    public TravelCompanyResponse addTravelCompany(TravelCompanyRequest travelCompany) {
         log.info("Attempting to add travel company with registration number: {}", travelCompany.getCompanyRegistrationNumber());
-
         // Check if company with same registration number already exists
         TravelCompany existingCompany = travelCompanyPersistence
                 .findByCompanyRegistrationNumber(travelCompany.getCompanyRegistrationNumber());
-
         if (existingCompany != null) {
             log.warn("Travel company already exists with registration number: {}", travelCompany.getCompanyRegistrationNumber());
             throw new BusinessException(GlobalExceptionEnums.COMPANY_ALREADY_EXIST,
                     travelCompany.getCompanyRegistrationNumber());
         }
-
         TravelCompany company = travelCompanysMapper.toCreateCompany(travelCompany);
         TravelCompany savedCompany = travelCompanyPersistence.save(company);
+        log.info("Successfully added travel company with ID: {}", savedCompany.getId());
+
+        return TravelCompanyResponse.builder()
+                .companyId(savedCompany.getId())
+                .Companystatus(savedCompany.getStatus())
+                .build();
+    }
+
+    @Override
+    public ActivateCompanyResponse activateCompany(int companyId, String token) {
+        log.info("Starting activation process for companyId: {}", companyId);
         //minimum required vehicle should be 2 and operator should be 6.
-        long driverCount = operatorPersistence.getDriverCount(savedCompany.getId());
-        List<VehicleResponse> vehicles = vehicleClient.getVehicle(savedCompany.getId(), token);
+        TravelCompany travelCompany = getById(companyId);
+        travelCompany.setStatus(Status.ACTIVE);
+        travelCompanyPersistence.save(travelCompany);
+        long driverCount = operatorPersistence.getDriverCount(companyId);
+        List<VehicleResponse> vehicles = vehicleClient.getVehicle(companyId, token);
         long vehicleCount = vehicles.size();
         long requiredDrivers = vehicleCount * 3;
         if (vehicleCount < 2) {
@@ -56,16 +69,8 @@ public class TravelCompanysService implements TravelCompanys {
         if (requiredDrivers < driverCount) {
             throw new BusinessException(GlobalExceptionEnums.COMPANY_DRIVER_REQUIREMENT_NOT_MET, driverCount);
         }
-        log.info("Successfully added travel company with ID: {}", savedCompany.getId());
-
-        return TravelCompanyResponse.builder()
-                .companyName(savedCompany.getCompanyName())
-                .companyOwnerName(savedCompany.getCompanyOwnerName())
-                .contactEmail(savedCompany.getContactEmail())
-                .contactPhone(savedCompany.getContactPhone())
-                .address(savedCompany.getAddress())
-                .vehicle(vehicles)
-                .build();
+        log.info("Company activated successfully for companyId: {}", companyId);
+        return travelCompanysMapper.toResponse(travelCompany, vehicles);
     }
 
     @Override

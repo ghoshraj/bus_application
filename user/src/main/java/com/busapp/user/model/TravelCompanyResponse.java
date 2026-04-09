@@ -1,12 +1,10 @@
 package com.busapp.user.model;
 
-import com.busapp.user.entity.Address;
+import com.busapp.user.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Data
 @SuperBuilder
@@ -14,10 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TravelCompanyResponse {
 
-    private String companyName;
-    private String companyOwnerName;
-    private String contactEmail;
-    private String contactPhone;
-    private Address address;
-    private List<VehicleResponse> vehicle;
+    private int companyId;
+    private Status Companystatus;
+
 }
