@@ -6,6 +6,8 @@ import com.busapp.user.exception.GlobalExceptionEnums;
 import com.busapp.user.mapper.TravelCompanysMapper;
 import com.busapp.user.messagebroker.client.VehicleClient;
 import com.busapp.user.model.TravelCompanyRequest;
+import com.busapp.user.model.TravelCompanyResponse;
+import com.busapp.user.model.VehicleResponse;
 import com.busapp.user.service.TravelCompanys;
 import com.busapp.user.service.persistence.OperatorPersistence;
 import com.busapp.user.service.persistence.TravelCompanyPersistence;
@@ -13,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +30,7 @@ public class TravelCompanysService implements TravelCompanys {
 
     @Override
     @Transactional
-    public TravelCompany addTravelCompany(TravelCompanyRequest travelCompany) {
+    public TravelCompanyResponse addTravelCompany(TravelCompanyRequest travelCompany, String token) {
         log.info("Attempting to add travel company with registration number: {}", travelCompany.getCompanyRegistrationNumber());
 
         // Check if company with same registration number already exists
@@ -43,7 +47,8 @@ public class TravelCompanysService implements TravelCompanys {
         TravelCompany savedCompany = travelCompanyPersistence.save(company);
         //minimum required vehicle should be 2 and operator should be 6.
         long driverCount = operatorPersistence.getDriverCount(savedCompany.getId());
-        long vehicleCount = vehicleClient.getVehicleCount(savedCompany.getId());
+        List<VehicleResponse> vehicles = vehicleClient.getVehicle(savedCompany.getId(), token);
+        long vehicleCount = vehicles.size();
         long requiredDrivers = vehicleCount * 3;
         if (vehicleCount < 2) {
             throw new BusinessException(GlobalExceptionEnums.COMPANY_RESOURCE_REQUIREMENT_NOT_MET, vehicleCount);
@@ -53,7 +58,14 @@ public class TravelCompanysService implements TravelCompanys {
         }
         log.info("Successfully added travel company with ID: {}", savedCompany.getId());
 
-        return savedCompany;
+        return TravelCompanyResponse.builder()
+                .companyName(savedCompany.getCompanyName())
+                .companyOwnerName(savedCompany.getCompanyOwnerName())
+                .contactEmail(savedCompany.getContactEmail())
+                .contactPhone(savedCompany.getContactPhone())
+                .address(savedCompany.getAddress())
+                .vehicle(vehicles)
+                .build();
     }
 
     @Override

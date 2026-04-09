@@ -62,4 +62,4 @@ kafka:
     concurrency: 3
 
 serviceUrl:
-  vehicle: /vehicle/count/{companyId}
+  vehicle: /vehicle/buses/company/{companyId}

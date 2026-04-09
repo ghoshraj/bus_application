@@ -12,5 +12,5 @@ public interface VehicleService {
     
     Vehicle getVehicleById(Integer id);
     
-    List<Vehicle> getVehiclesByCompanyId(int companyId);
+    List<?> getVehiclesByCompanyId(int companyId);
 }
