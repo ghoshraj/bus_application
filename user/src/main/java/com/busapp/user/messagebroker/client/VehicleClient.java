@@ -1,8 +1,11 @@
 package com.busapp.user.messagebroker.client;
 
+import com.busapp.user.model.VehicleResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
 
 @Service
 public class VehicleClient {
@@ -16,11 +19,13 @@ public class VehicleClient {
         this.webClient = webClient;
     }
 
-    public Integer getVehicleCount(Integer companyId) {
+    public List<VehicleResponse> getVehicle(Integer companyId, String token) {
         return webClient.get()
                 .uri(vehicleApi, companyId)
+                .headers(headers -> headers.setBearerAuth(token))
                 .retrieve()
-                .bodyToMono(Integer.class)
+                .bodyToFlux(VehicleResponse.class)
+                .collectList()
                 .block();
     }
 }

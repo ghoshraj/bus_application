@@ -64,15 +64,15 @@ public class VehicleController {
     @Operation(summary = "Get buses by company ID", description = "Fetch all buses belonging to a company. Accessible by USER and BUS_DRIVER roles.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Buses fetched successfully",
-                    content = @Content(schema = @Schema(implementation = Vehicle.class))),
+                    content = @Content(schema = @Schema(implementation = VehicleResponse.class))),
             @ApiResponse(responseCode = "403", description = "Forbidden - Access denied",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "Company or buses not found",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/buses/company/{companyId}")
-    public ResponseEntity<List<Vehicle>> getVehiclesByCompanyId(@PathVariable int companyId) {
-        List<Vehicle> vehicles = vehicleService.getVehiclesByCompanyId(companyId);
+    public ResponseEntity<List<?>> getVehiclesByCompanyId(@PathVariable int companyId) {
+        List<?> vehicles = vehicleService.getVehiclesByCompanyId(companyId);
         return ResponseEntity.ok(vehicles);
     }
 

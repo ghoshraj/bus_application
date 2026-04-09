@@ -83,7 +83,18 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<Vehicle> getVehiclesByCompanyId(int companyId) {
-        return vehiclePersistence.getVehiclesByCompanyId(companyId);
+    public List<?> getVehiclesByCompanyId(int companyId) {
+        List<Vehicle> vehicles =  vehiclePersistence.getVehiclesByCompanyId(companyId);
+        if (vehicles.isEmpty())return List.of();
+        return vehicles.stream()
+                .map(vehicle -> VehicleResponse.builder()
+                        .vehicleNumber(vehicle.getVehicleNumber())
+                        .vehicleModel(vehicle.getVehicleModel())
+                        .totalSeats(vehicle.getTotalSeats())
+                        .vehicleColor(vehicle.getVehicleColor())
+                        .vehicleImage(vehicle.getVehicleImage())
+                        .busType(vehicle.getBusType())
+                        .build())
+                .toList();
     }
 }

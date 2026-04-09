@@ -3,6 +3,8 @@ package com.busapp.user.controller;
 import com.busapp.user.entity.TravelCompany;
 import com.busapp.user.model.ErrorResponse;
 import com.busapp.user.model.TravelCompanyRequest;
+import com.busapp.user.model.TravelCompanyResponse;
+import com.busapp.user.model.TravellerProfileResponse;
 import com.busapp.user.service.TravelCompanys;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,17 +33,19 @@ public class TravelCompanyController {
     @Operation(summary = "Apply for a new travel company")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Company created successfully",
-                    content = @Content(schema = @Schema(implementation = TravelCompany.class))),
+                    content = @Content(schema = @Schema(implementation = TravelCompanyResponse.class))),
             @ApiResponse(responseCode = "400", description = "Validation error",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "403", description = "Forbidden",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/apply")
-    public ResponseEntity<TravelCompany> createCompany(
-            @Valid @RequestBody TravelCompanyRequest travelCompany) {
+    public ResponseEntity<TravelCompanyResponse> createCompany(
+            @Valid @RequestBody TravelCompanyRequest travelCompany,
+     @RequestHeader("Authorization") String authHeader) {
 
-        TravelCompany savedCompany = travelCompanys.addTravelCompany(travelCompany);
+        String token = authHeader.replace("Bearer ", "");
+        TravelCompanyResponse savedCompany = travelCompanys.addTravelCompany(travelCompany, token);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCompany);
     }
 
